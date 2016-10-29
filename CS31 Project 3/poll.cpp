@@ -34,6 +34,9 @@ int main() {
         cerr << "Passed test 4: countVotes(\"TX38RCA55D\", '%', votes)" << endl;
     if (!hasCorrectSyntax("TX38R CA55D"))
         cerr << "Passed test 5: TX38R CA55D not correct syntax" << endl;
+    if (!hasCorrectSyntax("TX450R")) {
+        cerr << "Passed test 6: TX389R has too many digits: you can only have 1 or 2 digits in a state forecast" << endl;
+    }
     
     return 0;
 }
@@ -81,9 +84,13 @@ bool hasCorrectSyntax(string pollData) {
                 //checking the syntax of the electoral votes for correctness
                 if (isdigit(pollData[i]) && i + 1 < length) {
                     i++;
+                    int count = 1;  //to keep track of how many digits are in the state forecast
                     for (; i < length; i++) {
                         if (isdigit(pollData[i])) {
-                            //do nothing and check the next digit
+                            count++;
+                            if (count > 2) { //can only have 2 digits or less in state forecast
+                                return false;
+                            }
                         }
                         else break; //not digits anymore
                     }
