@@ -21,7 +21,7 @@ void upperCasing (string&);
 int main() {
     
     //texting code
-    if (hasCorrectSyntax("TX38RCA55D"))
+    /*if (hasCorrectSyntax("TX38RCA55D"))
         cerr << "Passed test 1: hasCorrectSyntax(\"TX38RCA55D\")"<< endl;
     if (!hasCorrectSyntax("MX38RCA55D"))
         cerr << "Passed test 2: !hasCorrectSyntax(\"MX38RCA55D\")" << endl;
@@ -37,7 +37,31 @@ int main() {
     if (!hasCorrectSyntax("TX450R")) {
         cerr << "Passed test 6: TX389R has too many digits: you can only have 1 or 2 digits in a state forecast" << endl;
     }
-    
+    if (hasCorrectSyntax("")) {
+        cerr << "Passed test 7: empty string is correct syntax" << endl;
+    }
+    if (!hasCorrectSyntax("CA4")) {
+        cerr << "Passed test 8: not a complete state forecast" << endl;
+    }
+    if (!hasCorrectSyntax("C5d")) {
+        cerr << "Passed test 9: not a correct state code" << endl;
+    }
+    if (!hasCorrectSyntax("gA8dCA918728379871899789327498236781648972384g")) {
+        cerr << "Passed test 10: electoral vote has too many digits" << endl;
+    }
+    if (countVotes("hI35jTX38rCa55dmS6r", '4', votes) == 3) {
+        cerr << "Passed test 11: countVotes returns 3 when the party character is not a letter" << endl;
+    }
+    if (countVotes("h35jTX38rCa55dmS6r", 'r', votes) == 1) {
+        cerr << "Passed test 12: countVotes returns 1 when the poll data string has incorrect syntax" << endl;
+    }
+    if (countVotes("CA0dTX59R", 'r', votes) == 2) {
+        cerr << "Passed test 13: countVotes recognizes when there is a zero in the string and correctly returns 2" << endl;
+    }
+    if (hasCorrectSyntax("CA06dTX59R")) {
+        cerr << "Passed test 14: 06 is a correctly formatted electoral vote format" << endl;
+    }
+    */
     return 0;
 }
 

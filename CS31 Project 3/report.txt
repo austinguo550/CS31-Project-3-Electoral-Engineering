@@ -1,0 +1,71 @@
+a.	A notable error I had to overcome was that my hasCorrectSyntax method was not working correctly for any poll data string with more than one state forecast in it. This was because my code had a logic error: when checking the syntax of an input poll data string, the program would parse through the string only checking the state code, digits following, and party code after, breaking out of the parsing loop right after. Reading through my code to identify and fix this logic error was very tedious and cost me ten to twenty minutes of my time. Further, an even smaller logic error that cost me significant time to find and fix was mixing up loop indices. Because in my countVotes function I decided to use multiple loops to perform the task at hand, I declared multiple loop indices (i.e. “i” and “j”) to iterate each loop and parse through the poll data string. The problem rose from the fact that I habitually use the variable “i” to iterate through loops, so when I got to the loop using “j” as its index I declared “int j = 0” but accidentally typed “i” when trying to find the value of the character in the poll data string at position “j”. A smart way to implement the two loops could have been to make the scope of “i” and “j” limited by constraining them to their individual loops rather than the entire function; however, my initial implementation of code did use such farsighted methods and instead I spent upwards of twenty minutes trying to identify why I was getting nonsensical output though I was certain all my data structures were correctly implemented.
+
+b.	The first relevant function is void upperCasing, which takes in a string and outputs that string in all uppercase.
+
+    void upperCasing (input: poll data string) {
+        repeatedly:
+            turn character of string to uppercase
+    }
+    
+This makes it easier for the functions hasCorrectSyntax and countVotes to parse the strings and check for correct syntax and number of electoral votes.
+Then, hasCorrectSyntax will check that the poll data string has the correct syntax as outlined by the project spec.
+
+    bool hasCorrectSyntax (input: poll data string) {
+        repeatedly:
+            check the first state forecast in the poll data string for a state code using Smallberg's given isValidUppercaseStateCode
+                if you find that, check for electoral votes
+                    if you find more than two digits, the syntax is wrong, return false
+                    otherwise check the next characters to see if you find a letter representing party
+                        if you do, check the next state forecast in the poll data string (increment position in string)
+            if you satisfied all the previous statements the string has the correct syntax (return true)
+            otherwise if you don't find these conditions satisfied in order, the poll data string doesn't have correct syntax (return false)
+    }
+    
+The last relevant function is countVotes, which counts the number of votes a certain party has.
+
+    int countVotes (input: poll data string, party to check for, number of votes to edit) {
+        if the poll data string has incorrect syntax return error code 1
+        or repeatedly:
+            go through the poll data string
+            if any state's forecast  has 0 electoral votes return error 2
+        or if the party input is not a letter, return error code 3
+        
+        if none of the above happens
+            repeatedly:
+                go through the poll data string
+                if you find digits representing electoral votes for the party to check for
+                    edit the number of votes to add these votes
+                otherwise don't add these electoral votes to the vote count
+        return 0 to show the method successfully executed
+    }
+
+c. 
+Inputs numbered, and purpose for each string is listed underneath.
+    1. hasCorrectSyntax("TX38RCA55D")
+        To check hasCorrectSyntax can identify poll data strings with correct syntax correctly
+    2. !hasCorrectSyntax("MX38RCA55D")
+        To check that hasCorrectSyntax correctly identifies state forecasts with non-state first two characters as incorrect syntax
+    3. countVotes("TX38RCA55DMs6rnY29dUT06L", 'd', votes) == 0  &&  votes == 84
+        To check that countVotes correctly adds electoral votes for only a specific party, and will change the value of votes from -999 to the value of electoral votes.
+    4. countVotes("TX38RCA55D", '%', votes) == 3  &&  votes == -999
+        To check that countVotes will not change electoral votes from -999 if it outputs an error code
+    5. !hasCorrectSyntax("TX38R CA55D")
+        To check that spaces will register as incorrect syntax even if everything else is fine
+    6. !hasCorrectSyntax("TX450R")
+        To check that the number of digits in electoral votes can't be more than 2
+    7. hasCorrectSyntax(“”)
+	  To check that 0 state forecasts is also correct syntax
+    8. !hasCorrectSyntax("CA4")
+	  To check that incomplete state forecasts are identified as incorrect syntax
+    9. !hasCorrectSyntax("C5d")
+	  To check that incomplete state codes are identified as incorrect syntax
+    10. !hasCorrectSyntax("gA8dCA918728379871899789327498236781648972384g")
+	  To check that extremely long electoral vote counts will have incorrect syntax: you can only have 2 digits in an electoral vote
+    11. countVotes(“hI35jTX38rCa55dmS6r”, ‘4’, votes) == 3
+	  To check that countVotes will return 3 for having a non-letter party input
+    12. countVotes(“h35jTX38rCa55dmS6r”, ‘r’, votes) == 1
+	  To check that countVotes correctly returns 1 for having incorrect syntax in the poll data string, and will not change the value of votes
+    13. countVotes(“CA0dTX59R”, ‘r’, votes) == 2
+	  To check that countVotes correctly returns 2 for having a state forecast with 0 electoral votes
+    14. hasCorrectSyntax(“CA06dTX59R”) 
+	  To check that countVotes will be able to recognize that 06 is not 0 electoral votes and is in fact correct syntax, by checking both digits and not just one
